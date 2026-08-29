@@ -1,25 +1,41 @@
+import { useState, useEffect } from 'react';
 import Sidebar from '../components/Sidebar';
 import TopBar from '../components/TopBar';
-
-const rooms = [
-  { number: '101', type: 'Standard', floor: 1, status: 'available', price: 850000, bed: 'Single' },
-  { number: '102', type: 'Standard', floor: 1, status: 'occupied', price: 850000, bed: 'Twin' },
-  { number: '201', type: 'Deluxe', floor: 2, status: 'available', price: 1200000, bed: 'Queen' },
-  { number: '202', type: 'Deluxe', floor: 2, status: 'cleaning', price: 1200000, bed: 'King' },
-  { number: '301', type: 'Suite', floor: 3, status: 'occupied', price: 2500000, bed: 'King' },
-  { number: '302', type: 'Suite', floor: 3, status: 'maintenance', price: 2500000, bed: 'Queen' },
-  { number: '401', type: 'Executive', floor: 4, status: 'available', price: 3500000, bed: 'King' },
-  { number: '402', type: 'Executive', floor: 4, status: 'occupied', price: 3500000, bed: 'King' },
-];
+import { supabase } from '../lib/supabaseClient';
 
 const statusConfig = {
   available: { label: 'Tersedia', color: 'bg-primary-fixed text-primary' },
   occupied: { label: 'Terisi', color: 'bg-tertiary-fixed text-tertiary' },
   cleaning: { label: 'Cleaning', color: 'bg-secondary-fixed text-secondary' },
   maintenance: { label: 'Maintenance', color: 'bg-surface-variant text-on-surface-variant' },
+  vacant_clean: { label: 'Tersedia', color: 'bg-primary-fixed text-primary' },
 };
 
 export default function RoomMap() {
+  const [rooms, setRooms] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const fetchRooms = async () => {
+      const { data, error: fetchError } = await supabase
+        .from('rooms')
+        .select('*')
+        .order('number', { ascending: true });
+
+      setLoading(false);
+
+      if (fetchError) {
+        setError(fetchError.message);
+        return;
+      }
+
+      setRooms(data || []);
+    };
+
+    fetchRooms();
+  }, []);
+
   return (
     <div className="flex h-screen overflow-hidden bg-background text-on-background font-body-md text-body-md">
       <Sidebar />
@@ -42,12 +58,26 @@ export default function RoomMap() {
               </div>
             </div>
 
+            {error && (
+              <div className="rounded-lg border border-error bg-error-container px-md py-sm text-error">
+                Gagal memuat data kamar: {error}
+              </div>
+            )}
+
+            {loading && (
+              <div className="py-lg text-center text-on-surface-variant">Memuat data kamar...</div>
+            )}
+
+            {!loading && !error && rooms.length === 0 && (
+              <div className="py-lg text-center text-on-surface-variant">Belum ada data kamar.</div>
+            )}
+
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-gutter">
               {rooms.map((room) => {
-                const status = statusConfig[room.status];
+                const status = statusConfig[room.status] || statusConfig.vacant_clean;
                 return (
                   <div
-                    key={room.number}
+                    key={room.id}
                     className="group rounded-xl border border-outline-variant bg-surface-container-lowest p-lg shadow-sm transition-colors hover:border-primary"
                   >
                     <div className="flex items-start justify-between mb-md">
@@ -67,16 +97,16 @@ export default function RoomMap() {
                     <div className="space-y-sm">
                       <div className="flex items-center gap-sm text-on-surface-variant">
                         <span className="material-symbols-outlined text-[18px]">meeting_room</span>
-                        <span className="font-body-sm text-body-sm">{room.type}</span>
+                        <span className="font-body-sm text-body-sm capitalize">{room.type}</span>
                       </div>
                       <div className="flex items-center gap-sm text-on-surface-variant">
                         <span className="material-symbols-outlined text-[18px]">bed</span>
-                        <span className="font-body-sm text-body-sm">{room.bed}</span>
+                        <span className="font-body-sm text-body-sm capitalize">{room.bed_type}</span>
                       </div>
                       <div className="flex items-center gap-sm text-on-surface-variant">
                         <span className="material-symbols-outlined text-[18px]">payments</span>
                         <span className="font-body-sm text-body-sm font-jetbrains">
-                          Rp {room.price.toLocaleString('id-ID')}
+                          Rp {Number(room.base_price).toLocaleString('id-ID')}
                         </span>
                       </div>
                     </div>

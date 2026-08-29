@@ -1,7 +1,83 @@
-import { useRef } from 'react';
+import { useState } from 'react';
+import { supabase } from '../lib/supabaseClient';
 
 export default function AddRoom() {
-  const formRef = useRef(null);
+  const [form, setForm] = useState({
+    room_number: '',
+    floor: '',
+    room_type: '',
+    adult_cap: 2,
+    child_cap: 0,
+    bed_type: 'queen',
+    base_price: '',
+    amenities: ['wifi', 'ac', 'tv'],
+    initial_status: 'vacant_clean',
+    description: '',
+  });
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+  const [success, setSuccess] = useState(false);
+
+  const update = (field) => (e) => {
+    const value = e.target.type === 'checkbox' ? e.target.checked : e.target.value;
+    if (field === 'amenities') {
+      setForm((prev) => ({
+        ...prev,
+        amenities: value
+          ? [...prev.amenities, e.target.value]
+          : prev.amenities.filter((a) => a !== e.target.value),
+      }));
+    } else {
+      setForm((prev) => ({ ...prev, [field]: value }));
+    }
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    setError(null);
+    setSuccess(false);
+
+    const price = Number(String(form.base_price).replace(/\./g, '')) || 0;
+
+    const { data, error: insertError } = await supabase
+      .from('rooms')
+      .insert({
+        number: form.room_number.trim(),
+        floor: Number(form.floor),
+        type: form.room_type,
+        adult_capacity: form.adult_cap,
+        child_capacity: form.child_cap,
+        bed_type: form.bed_type,
+        base_price: price,
+        amenities: form.amenities,
+        status: form.initial_status,
+        description: form.description.trim() || null,
+      })
+      .select()
+      .single();
+
+    setLoading(false);
+
+    if (insertError) {
+      setError(insertError.message || 'Gagal menyimpan data kamar.');
+      return;
+    }
+
+    setSuccess(true);
+    setForm({
+      room_number: '',
+      floor: '',
+      room_type: '',
+      adult_cap: 2,
+      child_cap: 0,
+      bed_type: 'queen',
+      base_price: '',
+      amenities: ['wifi', 'ac', 'tv'],
+      initial_status: 'vacant_clean',
+      description: '',
+    });
+  };
 
   return (
     <div>
@@ -33,7 +109,18 @@ export default function AddRoom() {
         </p>
       </div>
 
-      <form ref={formRef} className="space-y-lg">
+      {error && (
+        <div className="mb-lg rounded-lg border border-error bg-error-container px-md py-sm text-error">
+          {error}
+        </div>
+      )}
+      {success && (
+        <div className="mb-lg rounded-lg border border-primary bg-primary-fixed px-md py-sm text-primary">
+          Data kamar berhasil disimpan.
+        </div>
+      )}
+
+      <form onSubmit={handleSubmit} className="space-y-lg">
         <div className="grid grid-cols-1 md:grid-cols-12 gap-lg">
           <div className="md:col-span-8 space-y-lg">
             <section className="rounded-xl border border-outline-variant bg-surface-container-lowest p-lg shadow-sm">
@@ -48,7 +135,8 @@ export default function AddRoom() {
                   </label>
                   <input
                     id="room_number"
-                    name="room_number"
+                    value={form.room_number}
+                    onChange={update('room_number')}
                     required
                     placeholder="Misal: 101"
                     type="text"
@@ -61,7 +149,8 @@ export default function AddRoom() {
                   </label>
                   <select
                     id="floor"
-                    name="floor"
+                    value={form.floor}
+                    onChange={update('floor')}
                     required
                     className="w-full appearance-none rounded border border-outline-variant bg-surface-container-lowest px-md py-sm font-body-md text-on-surface focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-colors"
                     style={{
@@ -72,7 +161,7 @@ export default function AddRoom() {
                       backgroundSize: '16px',
                     }}
                   >
-                    <option disabled selected value="">
+                    <option disabled value="">
                       Pilih Lantai
                     </option>
                     <option value="1">Lantai 1</option>
@@ -88,7 +177,8 @@ export default function AddRoom() {
                   </label>
                   <select
                     id="room_type"
-                    name="room_type"
+                    value={form.room_type}
+                    onChange={update('room_type')}
                     required
                     className="w-full appearance-none rounded border border-outline-variant bg-surface-container-lowest px-md py-sm font-body-md text-on-surface focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-colors"
                     style={{
@@ -99,7 +189,7 @@ export default function AddRoom() {
                       backgroundSize: '16px',
                     }}
                   >
-                    <option disabled selected value="">
+                    <option disabled value="">
                       Pilih Tipe
                     </option>
                     <option value="standard">Standard</option>
@@ -123,19 +213,14 @@ export default function AddRoom() {
                     <button
                       type="button"
                       className="px-sm py-sm text-on-surface-variant hover:bg-surface-container-high transition-colors"
-                      onClick={() => {
-                        const el = document.getElementById('adult_cap');
-                        el.value = Math.max(1, Number(el.value) - 1);
-                      }}
+                      onClick={() => setForm((prev) => ({ ...prev, adult_cap: Math.max(1, prev.adult_cap - 1) }))}
                     >
                       <span className="material-symbols-outlined text-[20px]">remove</span>
                     </button>
                     <input
-                      id="adult_cap"
-                      name="adult_cap"
                       readOnly
                       type="number"
-                      value={2}
+                      value={form.adult_cap}
                       min={1}
                       max={10}
                       className="w-full border-none text-center font-jetbrains font-bold text-on-surface bg-transparent p-sm focus:ring-0"
@@ -143,10 +228,7 @@ export default function AddRoom() {
                     <button
                       type="button"
                       className="px-sm py-sm text-on-surface-variant hover:bg-surface-container-high transition-colors"
-                      onClick={() => {
-                        const el = document.getElementById('adult_cap');
-                        el.value = Math.min(10, Number(el.value) + 1);
-                      }}
+                      onClick={() => setForm((prev) => ({ ...prev, adult_cap: Math.min(10, prev.adult_cap + 1) }))}
                     >
                       <span className="material-symbols-outlined text-[20px]">add</span>
                     </button>
@@ -158,19 +240,14 @@ export default function AddRoom() {
                     <button
                       type="button"
                       className="px-sm py-sm text-on-surface-variant hover:bg-surface-container-high transition-colors"
-                      onClick={() => {
-                        const el = document.getElementById('child_cap');
-                        el.value = Math.max(0, Number(el.value) - 1);
-                      }}
+                      onClick={() => setForm((prev) => ({ ...prev, child_cap: Math.max(0, prev.child_cap - 1) }))}
                     >
                       <span className="material-symbols-outlined text-[20px]">remove</span>
                     </button>
                     <input
-                      id="child_cap"
-                      name="child_cap"
                       readOnly
                       type="number"
-                      value={0}
+                      value={form.child_cap}
                       min={0}
                       max={10}
                       className="w-full border-none text-center font-jetbrains font-bold text-on-surface bg-transparent p-sm focus:ring-0"
@@ -178,10 +255,7 @@ export default function AddRoom() {
                     <button
                       type="button"
                       className="px-sm py-sm text-on-surface-variant hover:bg-surface-container-high transition-colors"
-                      onClick={() => {
-                        const el = document.getElementById('child_cap');
-                        el.value = Math.min(10, Number(el.value) + 1);
-                      }}
+                      onClick={() => setForm((prev) => ({ ...prev, child_cap: Math.min(10, prev.child_cap + 1) }))}
                     >
                       <span className="material-symbols-outlined text-[20px]">add</span>
                     </button>
@@ -193,7 +267,7 @@ export default function AddRoom() {
                     {[
                       { value: 'single', label: 'Single', icon: 'bed' },
                       { value: 'twin', label: 'Twin', icon: 'bed' },
-                      { value: 'queen', label: 'Queen', icon: 'bed', defaultChecked: true },
+                      { value: 'queen', label: 'Queen', icon: 'bed' },
                       { value: 'king', label: 'King', icon: 'king_bed' },
                     ].map((bed) => (
                       <label key={bed.value} className="cursor-pointer">
@@ -201,7 +275,8 @@ export default function AddRoom() {
                           type="radio"
                           name="bed_type"
                           value={bed.value}
-                          defaultChecked={!!bed.defaultChecked}
+                          checked={form.bed_type === bed.value}
+                          onChange={update('bed_type')}
                           className="peer sr-only"
                         />
                         <div className="rounded-lg border border-outline-variant p-sm text-center transition-all hover:border-primary hover:bg-primary-fixed-dim/10 peer-checked:border-primary peer-checked:bg-primary-container peer-checked:text-on-primary-container">
@@ -230,15 +305,16 @@ export default function AddRoom() {
                   </div>
                   <input
                     id="base_price"
-                    name="base_price"
+                    value={form.base_price}
+                    onChange={(e) => {
+                      const raw = e.target.value.replace(/[^\d]/g, '');
+                      e.target.value = raw ? Number(raw).toLocaleString('id-ID') : '';
+                      setForm((prev) => ({ ...prev, base_price: e.target.value }));
+                    }}
                     required
                     placeholder="0"
                     type="text"
                     className="w-full rounded border border-outline-variant bg-surface-container-lowest pl-xl pr-md py-sm font-jetbrains text-right text-lg font-bold text-on-surface focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-colors"
-                    onInput={(e) => {
-                      const raw = e.target.value.replace(/\D/g, '');
-                      e.target.value = raw ? Number(raw).toLocaleString('id-ID') : '';
-                    }}
                   />
                 </div>
               </div>
@@ -248,9 +324,9 @@ export default function AddRoom() {
                 </label>
                 <div className="flex flex-wrap gap-sm">
                   {[
-                    { value: 'wifi', label: 'Wi-Fi', icon: 'wifi', defaultChecked: true },
-                    { value: 'ac', label: 'AC', icon: 'ac_unit', defaultChecked: true },
-                    { value: 'tv', label: 'TV', icon: 'tv', defaultChecked: true },
+                    { value: 'wifi', label: 'Wi-Fi', icon: 'wifi' },
+                    { value: 'ac', label: 'AC', icon: 'ac_unit' },
+                    { value: 'tv', label: 'TV', icon: 'tv' },
                     { value: 'minibar', label: 'Minibar', icon: 'kitchen' },
                     { value: 'bathtub', label: 'Bathtub', icon: 'bathtub' },
                     { value: 'city_view', label: 'City View', icon: 'location_city' },
@@ -260,7 +336,8 @@ export default function AddRoom() {
                         type="checkbox"
                         name="amenities[]"
                         value={amenity.value}
-                        defaultChecked={!!amenity.defaultChecked}
+                        checked={form.amenities.includes(amenity.value)}
+                        onChange={update('amenities')}
                         className="peer sr-only"
                       />
                       <div className="flex items-center gap-xs rounded-full border border-outline-variant px-sm py-xs font-label-sm text-label-sm transition-colors hover:bg-surface-container peer-checked:bg-secondary-fixed peer-checked:text-on-secondary-fixed peer-checked:border-secondary">
@@ -286,7 +363,8 @@ export default function AddRoom() {
                 </label>
                 <select
                   id="initial_status"
-                  name="initial_status"
+                  value={form.initial_status}
+                  onChange={update('initial_status')}
                   className="w-full appearance-none rounded border border-outline-variant bg-surface-container-lowest px-md py-sm font-body-md text-on-surface focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-colors"
                   style={{
                     backgroundImage:
@@ -306,7 +384,8 @@ export default function AddRoom() {
                 </label>
                 <textarea
                   id="description"
-                  name="description"
+                  value={form.description}
+                  onChange={update('description')}
                   placeholder="Tambahkan catatan khusus mengenai kamar ini (opsional)..."
                   rows={5}
                   className="flex-1 resize-none rounded border border-outline-variant bg-surface-container-lowest px-md py-sm font-body-md text-on-surface focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-colors"
@@ -319,15 +398,31 @@ export default function AddRoom() {
         <div className="fixed bottom-0 left-0 right-0 md:static bg-surface-container-lowest md:bg-transparent border-t border-outline-variant md:border-none z-20 flex justify-end gap-md p-margin-mobile md:p-0">
           <button
             type="button"
+            onClick={() =>
+              setForm({
+                room_number: '',
+                floor: '',
+                room_type: '',
+                adult_cap: 2,
+                child_cap: 0,
+                bed_type: 'queen',
+                base_price: '',
+                amenities: ['wifi', 'ac', 'tv'],
+                initial_status: 'vacant_clean',
+                description: '',
+              })
+            }
             className="rounded border border-primary px-lg py-sm font-label-md text-label-md text-primary transition-colors hover:bg-primary-fixed-dim/10"
+            type="button"
           >
             Batal
           </button>
           <button
             type="submit"
-            className="rounded bg-primary px-lg py-sm font-label-md text-label-md text-on-primary transition-colors hover:bg-primary/90 shadow-sm"
+            disabled={loading}
+            className="rounded bg-primary px-lg py-sm font-label-md text-label-md text-on-primary transition-colors hover:bg-primary/90 shadow-sm disabled:opacity-70"
           >
-            Simpan Data Kamar
+            {loading ? 'Menyimpan...' : 'Simpan Data Kamar'}
           </button>
         </div>
         <div className="h-20 md:hidden" />

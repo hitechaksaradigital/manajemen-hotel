@@ -1,4 +1,6 @@
+import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { supabase } from '../lib/supabaseClient';
 
 const cards = [
   { icon: 'meeting_room', title: 'Room Management', desc: 'Add, edit, or archive rooms and their rates.', to: '/settings/rooms/add' },
@@ -7,7 +9,21 @@ const cards = [
   { icon: 'category', title: 'Room Types', desc: 'Manage standard, deluxe, suite, and more.', to: '/settings/room-types' },
 ];
 
-export default function SettingsHome() {
+export default function Settings() {
+  const [roomCount, setRoomCount] = useState(null);
+
+  useEffect(() => {
+    const fetchCount = async () => {
+      const { count, error } = await supabase
+        .from('rooms')
+        .select('*', { count: 'exact', head: true });
+
+      if (!error) setRoomCount(count);
+    };
+
+    fetchCount();
+  }, []);
+
   return (
     <div>
       <div className="mb-lg">
@@ -35,7 +51,11 @@ export default function SettingsHome() {
               <span className="material-symbols-outlined text-primary mt-0.5">{card.icon}</span>
               <h3 className="font-headline-md text-headline-md text-on-surface">{card.title}</h3>
             </div>
-            <p className="font-body-sm text-body-sm text-on-surface-variant">{card.desc}</p>
+            <p className="font-body-sm text-body-sm text-on-surface-variant">
+              {card.title === 'Room Management' && roomCount !== null
+                ? `${roomCount} room${roomCount !== 1 ? 's' : ''} registered in system.`
+                : card.desc}
+            </p>
           </Link>
         ))}
       </div>
