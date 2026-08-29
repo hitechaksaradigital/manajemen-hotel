@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>LuxeManage PMS - Billing &amp; Front Desk</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@500;600&amp;family=Manrope:wght@600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-container": "#eeeef0",
+                        "on-secondary-fixed": "#271900",
+                        "error-container": "#ffdad6",
+                        "secondary-container": "#fdb700",
+                        "on-secondary-fixed-variant": "#5e4200",
+                        "on-tertiary-fixed-variant": "#900039",
+                        "tertiary-container": "#e11a61",
+                        "on-primary-fixed": "#001d35",
+                        "inverse-on-surface": "#f0f0f3",
+                        "surface-bright": "#f9f9fc",
+                        "primary": "#005f9d",
+                        "tertiary": "#b8004b",
+                        "surface": "#f9f9fc",
+                        "on-error": "#ffffff",
+                        "outline": "#707882",
+                        "on-error-container": "#93000a",
+                        "inverse-primary": "#9ccaff",
+                        "surface-variant": "#e2e2e5",
+                        "on-background": "#1a1c1e",
+                        "on-secondary-container": "#6a4b00",
+                        "surface-container-low": "#f3f3f6",
+                        "secondary": "#7c5800",
+                        "surface-dim": "#dadadc",
+                        "surface-container-high": "#e8e8ea",
+                        "error": "#ba1a1a",
+                        "inverse-surface": "#2f3133",
+                        "on-primary-fixed-variant": "#00497b",
+                        "surface-container-lowest": "#ffffff",
+                        "surface-tint": "#0062a1",
+                        "background": "#f9f9fc",
+                        "primary-container": "#0079c5",
+                        "on-tertiary-container": "#fffbff",
+                        "outline-variant": "#c0c7d3",
+                        "on-primary": "#ffffff",
+                        "primary-fixed-dim": "#9ccaff",
+                        "on-secondary": "#ffffff",
+                        "tertiary-fixed": "#ffd9de",
+                        "on-surface-variant": "#404751",
+                        "tertiary-fixed-dim": "#ffb2be",
+                        "secondary-fixed-dim": "#ffbb18",
+                        "on-surface": "#1a1c1e",
+                        "on-tertiary-fixed": "#3f0015",
+                        "on-tertiary": "#ffffff",
+                        "primary-fixed": "#d0e4ff",
+                        "surface-container-highest": "#e2e2e5",
+                        "on-primary-container": "#fdfcff",
+                        "secondary-fixed": "#ffdea7"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "base": "4px",
+                        "margin-desktop": "32px",
+                        "md": "16px",
+                        "sm": "8px",
+                        "gutter": "16px",
+                        "xs": "4px",
+                        "xl": "32px",
+                        "lg": "24px",
+                        "margin-mobile": "16px"
+                    },
+                    "fontFamily": {
+                        "body-md": ["Hanken Grotesk"],
+                        "headline-lg": ["Manrope"],
+                        "label-sm": ["JetBrains Mono"],
+                        "headline-md": ["Manrope"],
+                        "label-md": ["JetBrains Mono"],
+                        "body-sm": ["Hanken Grotesk"],
+                        "display-lg": ["Manrope"],
+                        "body-lg": ["Hanken Grotesk"]
+                    },
+                    "fontSize": {
+                        "body-md": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                        "headline-lg": ["32px", { "lineHeight": "40px", "fontWeight": "700" }],
+                        "label-sm": ["11px", { "lineHeight": "14px", "fontWeight": "600" }],
+                        "headline-md": ["24px", { "lineHeight": "32px", "fontWeight": "600" }],
+                        "label-md": ["13px", { "lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "500" }],
+                        "body-sm": ["14px", { "lineHeight": "20px", "fontWeight": "400" }],
+                        "display-lg": ["40px", { "lineHeight": "48px", "letterSpacing": "-0.02em", "fontWeight": "800" }],
+                        "body-lg": ["18px", { "lineHeight": "28px", "fontWeight": "400" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .material-symbols-outlined.fill {
+            font-variation-settings: 'FILL' 1;
+        }
+        
+        /* Custom Scrollbar for tables */
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background-color: #c0c7d3;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background font-body-md min-h-screen flex flex-col antialiased">
+<!-- TopAppBar Shared Component -->
+<header class="flex justify-between items-center w-full h-16 pl-72 pr-margin-desktop bg-surface-bright border-b border-outline-variant shadow-sm docked full-width top-0 sticky z-40">
+<!-- Logo / Search -->
+<div class="flex items-center gap-lg">
+<span class="font-headline-md text-headline-md font-extrabold text-primary">LuxeManage PMS</span>
+<div class="relative hidden lg:flex items-center">
+<span class="material-symbols-outlined absolute left-3 text-on-surface-variant text-[20px]">search</span>
+<input class="pl-10 pr-4 py-2 w-72 bg-surface-container-low border border-outline-variant rounded focus:border-primary focus:ring-1 focus:ring-primary font-body-sm text-body-sm text-on-surface transition-colors placeholder:text-on-surface-variant" placeholder="Search guest, booking ID..." type="text"/>
+</div>
+</div>
+<!-- Trailing Actions -->
+<div class="flex items-center gap-md">
+<button class="px-4 py-2 bg-primary text-on-primary font-label-md text-label-md rounded hover:bg-primary-container transition-colors shadow-sm">
+                Quick Check-in
+            </button>
+<button class="px-4 py-2 border border-outline-variant text-primary font-label-md text-label-md rounded hover:bg-surface-container-low transition-colors bg-surface-container-lowest">
+                Property Switcher
+            </button>
+<div class="flex items-center gap-sm ml-sm border-l border-outline-variant pl-md">
+<button aria-label="Notifications" class="p-2 text-on-surface-variant hover:text-primary transition-all rounded-full hover:bg-surface-container-low">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<button aria-label="History" class="p-2 text-on-surface-variant hover:text-primary transition-all rounded-full hover:bg-surface-container-low">
+<span class="material-symbols-outlined">history</span>
+</button>
+<button class="w-8 h-8 rounded-full bg-surface-container overflow-hidden border border-outline-variant hover:border-primary transition-all">
+<img alt="User Avatar" class="w-full h-full object-cover" data-alt="A professional headshot of a hotel manager in a sharp blue suit, standing in a brightly lit modern hotel lobby. The lighting is crisp and corporate, highlighting a clean, high-contrast aesthetic typical of luxury hospitality." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDlgijt8d1npG-8Hk8QMrstCFXBMPudDryWlodL7wsKpUuk4AECFtJnGU8KZacxjTwkHHyf6oN2sEjmPTeMwwSzBfOCBED3xog8mLSAQOUe-ZzqCCZvTJhNRuArUdStA4jEilev2Z2wExjhFWQt6p-4bi0R7I1KcijzLFiT9gIxvMXo-xLE3xzfAARdYOhR4_wr03u-4eK9VhrFvw7zKU076cpY9EJuzZIfRiFkTJFTXL8iLXL25z8K"/>
+</button>
+</div>
+</div>
+</header>
+<div class="flex flex-1 overflow-hidden">
+<!-- SideNavBar Shared Component -->
+<nav class="h-screen w-64 fixed left-0 top-0 bg-surface border-r border-outline-variant flex flex-col h-full py-md px-sm z-50">
+<!-- Header Area (Brand) -->
+<div class="mb-lg px-3 py-2 flex flex-col">
+<div class="flex items-center gap-3 mb-2">
+<div class="w-10 h-10 rounded-full bg-primary-container text-on-primary-container flex items-center justify-center font-bold text-lg">
+                        LM
+                    </div>
+<div>
+<h1 class="font-headline-md text-[18px] font-bold text-primary leading-tight">LuxeManage PMS</h1>
+<p class="font-body-sm text-[12px] text-on-surface-variant">Grand Plaza Branch</p>
+</div>
+</div>
+</div>
+<button class="w-full mb-md px-4 py-2 bg-primary text-on-primary font-label-md text-label-md rounded flex items-center justify-center gap-2 hover:bg-primary-container transition-colors shadow-sm">
+<span class="material-symbols-outlined text-[18px]">add</span>
+                New Reservation
+            </button>
+<!-- Navigation Tabs -->
+<div class="flex-1 overflow-y-auto custom-scrollbar flex flex-col gap-1">
+<a class="flex items-center gap-3 px-4 py-3 rounded text-on-surface-variant hover:bg-surface-container transition-colors group" href="#">
+<span class="material-symbols-outlined text-[20px] group-hover:text-primary transition-colors">dashboard</span>
+<span class="font-label-md text-label-md">Dashboard</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded text-on-surface-variant hover:bg-surface-container transition-colors group" href="#">
+<span class="material-symbols-outlined text-[20px] group-hover:text-primary transition-colors">grid_view</span>
+<span class="font-label-md text-label-md">Room Map</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded text-on-surface-variant hover:bg-surface-container transition-colors group" href="#">
+<span class="material-symbols-outlined text-[20px] group-hover:text-primary transition-colors">calendar_month</span>
+<span class="font-label-md text-label-md">Reservations</span>
+</a>
+<!-- ACTIVE STATE: Check-in/Out maps best to Billing/Front Desk -->
+<a class="flex items-center gap-3 px-4 py-3 rounded bg-surface-container-low border-r-2 border-primary text-primary font-bold opacity-80 transition-opacity" href="#">
+<span class="material-symbols-outlined text-[20px] fill">sync_alt</span>
+<span class="font-label-md text-label-md">Check-in/Out</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded text-on-surface-variant hover:bg-surface-container transition-colors group" href="#">
+<span class="material-symbols-outlined text-[20px] group-hover:text-primary transition-colors">cleaning_services</span>
+<span class="font-label-md text-label-md">Housekeeping</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded text-on-surface-variant hover:bg-surface-container transition-colors group" href="#">
+<span class="material-symbols-outlined text-[20px] group-hover:text-primary transition-colors">group</span>
+<span class="font-label-md text-label-md">Guest CRM</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded text-on-surface-variant hover:bg-surface-container transition-colors group" href="#">
+<span class="material-symbols-outlined text-[20px] group-hover:text-primary transition-colors">settings</span>
+<span class="font-label-md text-label-md">Settings</span>
+</a>
+</div>
+<!-- Footer Tabs -->
+<div class="mt-auto pt-md border-t border-outline-variant flex flex-col gap-1">
+<a class="flex items-center gap-3 px-4 py-2 rounded text-on-surface-variant hover:bg-surface-container transition-colors" href="#">
+<span class="material-symbols-outlined text-[20px]">help</span>
+<span class="font-label-md text-label-md">Help</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-2 rounded text-error hover:bg-error-container hover:text-on-error-container transition-colors" href="#">
+<span class="material-symbols-outlined text-[20px]">logout</span>
+<span class="font-label-md text-label-md">Logout</span>
+</a>
+</div>
+</nav>
+<!-- Main Content Canvas -->
+<main class="flex-1 ml-64 p-margin-desktop bg-background overflow-y-auto">
+<!-- Page Header -->
+<div class="flex justify-between items-end mb-lg">
+<div>
+<div class="flex items-center gap-2 text-on-surface-variant mb-1">
+<span class="font-label-md text-label-md uppercase">Front Desk</span>
+<span class="material-symbols-outlined text-[14px]">chevron_right</span>
+<span class="font-label-md text-label-md uppercase text-primary">Checkout &amp; Billing</span>
+</div>
+<h2 class="font-headline-lg text-headline-lg text-on-background">Folio Settlement</h2>
+</div>
+<!-- Search within page -->
+<div class="relative w-80">
+<span class="material-symbols-outlined absolute left-3 top-2.5 text-on-surface-variant text-[20px]">search</span>
+<input class="w-full pl-10 pr-4 py-2 bg-surface-container-lowest border border-outline-variant rounded focus:border-primary focus:ring-1 focus:ring-primary font-body-md text-body-md" placeholder="Scan or enter folio number..." type="text"/>
+</div>
+</div>
+<!-- Split Screen Layout -->
+<div class="grid grid-cols-12 gap-gutter h-[calc(100vh-180px)]">
+<!-- LEFT PANEL: Guest Details -->
+<div class="col-span-12 xl:col-span-4 flex flex-col gap-gutter">
+<!-- Identity Card -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-lg p-md shadow-sm">
+<div class="flex justify-between items-start mb-md">
+<h3 class="font-headline-md text-[18px] text-on-surface">Guest Profile</h3>
+<span class="px-2 py-1 bg-tertiary-container text-on-tertiary-container font-label-sm text-label-sm rounded-full uppercase tracking-wider">VIP</span>
+</div>
+<div class="flex items-center gap-4 mb-md">
+<div class="w-16 h-16 rounded-full overflow-hidden border-2 border-primary-container shrink-0">
+<img alt="Guest Profile Picture" class="w-full h-full object-cover" data-alt="A portrait of a well-dressed male guest in his 40s, looking professional. Crisp, bright lighting characteristic of a modern corporate portrait against a neutral gray background." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDudK4V6u3vNzLA64CWZy7Sy_FYCa9pCZnzP6MRjxOQBJfxQIylgLErd8ICk25N9qaLcYpzI_GzltcjHaonoTyr64UrIGSFyk8gm9Lz9SXW6QWkKKTusoQh0Xi1uszoxTPfEW3xJawOa-PXC30Tg1x7qD75poelv3QMzck-h-sJCurkN9nBS68dG4fHmi9ZQiRhQtDuBfwbEI4IaVLDzj_-l8T6I_ePzLjw2PdTGYqOLeDvCOx74R29"/>
+</div>
+<div>
+<h4 class="font-headline-md text-[20px] leading-tight">Alexander Sterling</h4>
+<p class="font-label-md text-label-md text-on-surface-variant flex items-center gap-1 mt-1">
+<span class="material-symbols-outlined text-[14px]">mail</span> a.sterling@corp.com
+                                </p>
+<p class="font-label-md text-label-md text-on-surface-variant flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">call</span> +1 (555) 019-8233
+                                </p>
+</div>
+</div>
+<div class="grid grid-cols-2 gap-4 border-t border-outline-variant pt-md">
+<div>
+<p class="font-label-sm text-label-sm text-on-surface-variant uppercase mb-1">Company</p>
+<p class="font-body-sm text-body-sm font-medium">Sterling Global LLC</p>
+</div>
+<div>
+<p class="font-label-sm text-label-sm text-on-surface-variant uppercase mb-1">Loyalty Tier</p>
+<p class="font-body-sm text-body-sm font-medium text-secondary-container">Platinum Member</p>
+</div>
+</div>
+</div>
+<!-- Stay Details Card -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-lg p-md shadow-sm flex-1">
+<div class="flex justify-between items-center mb-md pb-sm border-b border-outline-variant">
+<h3 class="font-headline-md text-[18px] text-on-surface">Stay Details</h3>
+<div class="flex items-center gap-2 bg-primary-container bg-opacity-10 px-3 py-1 rounded">
+<span class="font-label-sm text-label-sm text-primary uppercase">Room</span>
+<span class="font-label-md text-label-md font-bold text-primary">1402</span>
+</div>
+</div>
+<div class="flex justify-between items-center mb-lg">
+<div class="text-center">
+<p class="font-label-sm text-label-sm text-on-surface-variant uppercase mb-1">Check-In</p>
+<p class="font-body-lg text-[20px] font-semibold">Oct 12</p>
+<p class="font-body-sm text-[12px] text-on-surface-variant">14:30</p>
+</div>
+<div class="flex-1 px-4 flex flex-col items-center">
+<div class="w-full h-px bg-outline-variant relative">
+<span class="absolute left-1/2 top-1/2 -translate-y-1/2 -translate-x-1/2 bg-surface-container-lowest px-2 font-label-sm text-label-sm text-on-surface-variant">3 NIGHTS</span>
+</div>
+</div>
+<div class="text-center">
+<p class="font-label-sm text-label-sm text-on-surface-variant uppercase mb-1">Check-Out</p>
+<p class="font-body-lg text-[20px] font-semibold text-primary">Oct 15</p>
+<p class="font-body-sm text-[12px] text-on-surface-variant">11:00</p>
+</div>
+</div>
+<div class="space-y-3">
+<div class="flex justify-between items-center">
+<span class="font-body-sm text-on-surface-variant">Room Type</span>
+<span class="font-body-sm font-medium">Executive King Suite</span>
+</div>
+<div class="flex justify-between items-center">
+<span class="font-body-sm text-on-surface-variant">Rate Plan</span>
+<span class="font-body-sm font-medium">Corporate Standard</span>
+</div>
+<div class="flex justify-between items-center">
+<span class="font-body-sm text-on-surface-variant">Booking Source</span>
+<span class="font-body-sm font-medium">Direct - Web</span>
+</div>
+</div>
+</div>
+</div>
+<!-- RIGHT PANEL: Billing & Settlement -->
+<div class="col-span-12 xl:col-span-8 flex flex-col bg-surface-container-lowest border border-outline-variant rounded-lg shadow-sm overflow-hidden">
+<!-- Header -->
+<div class="p-md border-b border-outline-variant flex justify-between items-center bg-surface-container-low">
+<h3 class="font-headline-md text-[20px] text-on-surface">Folio #FL-2023-10492</h3>
+<div class="flex gap-2">
+<button aria-label="Print Preview" class="p-2 border border-outline-variant text-on-surface-variant rounded hover:bg-surface-container transition-colors">
+<span class="material-symbols-outlined text-[20px]">print</span>
+</button>
+<button aria-label="Email Folio" class="p-2 border border-outline-variant text-on-surface-variant rounded hover:bg-surface-container transition-colors">
+<span class="material-symbols-outlined text-[20px]">mail</span>
+</button>
+</div>
+</div>
+<!-- Ledger Table -->
+<div class="flex-1 overflow-y-auto custom-scrollbar">
+<table class="w-full text-left border-collapse">
+<thead class="sticky top-0 bg-surface-container-lowest border-b-2 border-primary z-10">
+<tr>
+<th class="py-3 px-4 font-label-sm text-label-sm uppercase text-on-surface-variant w-24">Date</th>
+<th class="py-3 px-4 font-label-sm text-label-sm uppercase text-on-surface-variant w-24">Code</th>
+<th class="py-3 px-4 font-label-sm text-label-sm uppercase text-on-surface-variant">Description</th>
+<th class="py-3 px-4 font-label-sm text-label-sm uppercase text-on-surface-variant text-right w-32">Amount</th>
+</tr>
+</thead>
+<tbody class="font-body-sm">
+<!-- Room Charges -->
+<tr class="border-b border-outline-variant border-opacity-50 hover:bg-surface-container-low transition-colors">
+<td class="py-3 px-4 text-on-surface-variant">12 Oct</td>
+<td class="py-3 px-4"><span class="font-label-md text-label-md">RM-1</span></td>
+<td class="py-3 px-4">Room Charge - Night 1</td>
+<td class="py-3 px-4 text-right font-label-md text-label-md">$285.00</td>
+</tr>
+<tr class="border-b border-outline-variant border-opacity-50 hover:bg-surface-container-low transition-colors">
+<td class="py-3 px-4 text-on-surface-variant">13 Oct</td>
+<td class="py-3 px-4"><span class="font-label-md text-label-md">RM-1</span></td>
+<td class="py-3 px-4">Room Charge - Night 2</td>
+<td class="py-3 px-4 text-right font-label-md text-label-md">$285.00</td>
+</tr>
+<tr class="border-b border-outline-variant border-opacity-50 hover:bg-surface-container-low transition-colors">
+<td class="py-3 px-4 text-on-surface-variant">14 Oct</td>
+<td class="py-3 px-4"><span class="font-label-md text-label-md">RM-1</span></td>
+<td class="py-3 px-4">Room Charge - Night 3</td>
+<td class="py-3 px-4 text-right font-label-md text-label-md">$285.00</td>
+</tr>
+<!-- Ancillary Charges -->
+<tr class="border-b border-outline-variant border-opacity-50 hover:bg-surface-container-low transition-colors bg-surface-bright">
+<td class="py-3 px-4 text-on-surface-variant">13 Oct</td>
+<td class="py-3 px-4"><span class="font-label-md text-label-md">F&amp;B-RS</span></td>
+<td class="py-3 px-4">Room Service - Breakfast</td>
+<td class="py-3 px-4 text-right font-label-md text-label-md">$42.50</td>
+</tr>
+<tr class="border-b border-outline-variant border-opacity-50 hover:bg-surface-container-low transition-colors bg-surface-bright">
+<td class="py-3 px-4 text-on-surface-variant">14 Oct</td>
+<td class="py-3 px-4"><span class="font-label-md text-label-md">LNDRY</span></td>
+<td class="py-3 px-4">Laundry &amp; Dry Cleaning</td>
+<td class="py-3 px-4 text-right font-label-md text-label-md">$35.00</td>
+</tr>
+<!-- Previous Payments -->
+<tr class="border-b border-outline-variant border-opacity-50 hover:bg-surface-container-low transition-colors bg-tertiary-fixed bg-opacity-20 text-tertiary">
+<td class="py-3 px-4">12 Oct</td>
+<td class="py-3 px-4"><span class="font-label-md text-label-md">DEP-CC</span></td>
+<td class="py-3 px-4">Advance Deposit (Visa ending in 4492)</td>
+<td class="py-3 px-4 text-right font-label-md text-label-md">-$250.00</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- Summary & Settlement Area -->
+<div class="border-t border-outline-variant bg-surface-container-lowest p-md grid grid-cols-2 gap-md">
+<!-- Totals Column -->
+<div class="flex flex-col justify-end space-y-2 pr-md border-r border-outline-variant">
+<div class="flex justify-between items-center text-on-surface-variant font-body-sm">
+<span>Subtotal</span>
+<span>$932.50</span>
+</div>
+<div class="flex justify-between items-center text-on-surface-variant font-body-sm">
+<span>City Tax (5%)</span>
+<span>$46.63</span>
+</div>
+<div class="flex justify-between items-center text-on-surface-variant font-body-sm">
+<span>State Tax (7%)</span>
+<span>$65.28</span>
+</div>
+<div class="w-full h-px bg-outline-variant my-1"></div>
+<div class="flex justify-between items-center font-headline-md text-[18px]">
+<span>Total Charges</span>
+<span>$1,044.41</span>
+</div>
+<div class="flex justify-between items-center text-tertiary font-body-sm">
+<span>Less Payments/Deposits</span>
+<span>-$250.00</span>
+</div>
+<div class="flex justify-between items-center font-headline-lg text-[28px] text-primary mt-2">
+<span>Balance Due</span>
+<span class="font-bold">$794.41</span>
+</div>
+</div>
+<!-- Payment Actions -->
+<div class="flex flex-col justify-between pl-sm">
+<div>
+<label class="font-label-sm text-label-sm text-on-surface-variant uppercase mb-2 block">Payment Method</label>
+<div class="grid grid-cols-2 gap-2 mb-4">
+<button class="border-2 border-primary bg-primary-fixed bg-opacity-20 text-primary font-label-md py-2 rounded flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-[18px]">credit_card</span>
+                                        Credit Card
+                                    </button>
+<button class="border border-outline-variant text-on-surface-variant font-label-md py-2 rounded flex items-center justify-center gap-2 hover:bg-surface-container">
+<span class="material-symbols-outlined text-[18px]">account_balance</span>
+                                        Transfer
+                                    </button>
+<button class="border border-outline-variant text-on-surface-variant font-label-md py-2 rounded flex items-center justify-center gap-2 hover:bg-surface-container">
+<span class="material-symbols-outlined text-[18px]">payments</span>
+                                        Cash
+                                    </button>
+<button class="border border-outline-variant text-on-surface-variant font-label-md py-2 rounded flex items-center justify-center gap-2 hover:bg-surface-container">
+<span class="material-symbols-outlined text-[18px]">contactless</span>
+                                        E-Wallet
+                                    </button>
+</div>
+<div class="relative mb-4">
+<span class="material-symbols-outlined absolute left-3 top-2.5 text-on-surface-variant text-[18px]">credit_card</span>
+<input class="w-full pl-10 pr-4 py-2 bg-surface-container-low border border-outline-variant rounded font-body-sm text-on-surface cursor-not-allowed" readonly="" type="text" value="Visa ending in 4492 (On File)"/>
+</div>
+</div>
+<button class="w-full bg-primary text-on-primary font-headline-md text-[18px] py-3 rounded shadow-md hover:bg-primary-container hover:shadow-lg transition-all flex items-center justify-center gap-2">
+<span class="material-symbols-outlined">task_alt</span>
+                                Complete Check-out ($794.41)
+                            </button>
+</div>
+</div>
+</div>
+</div>
+</main>
+</div>
+</body></html>

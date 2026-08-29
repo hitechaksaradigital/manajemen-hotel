@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+
+<html lang="id"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Tambah Data Kamar - LuxeManage PMS</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "primary-fixed": "#d0e4ff",
+                    "surface-dim": "#dadadc",
+                    "on-tertiary": "#ffffff",
+                    "on-primary-fixed": "#001d35",
+                    "secondary-fixed-dim": "#ffbb18",
+                    "on-error": "#ffffff",
+                    "secondary-fixed": "#ffdea7",
+                    "surface-container": "#eeeef0",
+                    "surface-container-low": "#f3f3f6",
+                    "surface-variant": "#e2e2e5",
+                    "on-surface": "#1a1c1e",
+                    "surface-container-highest": "#e2e2e5",
+                    "tertiary-fixed-dim": "#ffb2be",
+                    "on-tertiary-fixed-variant": "#900039",
+                    "on-background": "#1a1c1e",
+                    "on-secondary-fixed": "#271900",
+                    "primary-container": "#0079c5",
+                    "secondary-container": "#fdb700",
+                    "inverse-surface": "#2f3133",
+                    "on-surface-variant": "#404751",
+                    "inverse-on-surface": "#f0f0f3",
+                    "tertiary-fixed": "#ffd9de",
+                    "primary-fixed-dim": "#9ccaff",
+                    "surface-tint": "#0062a1",
+                    "surface-container-lowest": "#ffffff",
+                    "outline": "#707882",
+                    "error": "#ba1a1a",
+                    "on-primary-container": "#fdfcff",
+                    "tertiary-container": "#e11a61",
+                    "primary": "#005f9d",
+                    "surface-container-high": "#e8e8ea",
+                    "on-tertiary-fixed": "#3f0015",
+                    "error-container": "#ffdad6",
+                    "outline-variant": "#c0c7d3",
+                    "on-tertiary-container": "#fffbff",
+                    "on-primary-fixed-variant": "#00497b",
+                    "on-secondary-container": "#6a4b00",
+                    "background": "#f9f9fc",
+                    "on-secondary-fixed-variant": "#5e4200",
+                    "secondary": "#7c5800",
+                    "on-primary": "#ffffff",
+                    "tertiary": "#b8004b",
+                    "on-error-container": "#93000a",
+                    "surface": "#f9f9fc",
+                    "on-secondary": "#ffffff",
+                    "surface-bright": "#f9f9fc",
+                    "inverse-primary": "#9ccaff"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.125rem",
+                    "lg": "0.25rem",
+                    "xl": "0.5rem",
+                    "full": "0.75rem"
+            },
+            "spacing": {
+                    "md": "16px",
+                    "xs": "4px",
+                    "gutter": "16px",
+                    "base": "4px",
+                    "sm": "8px",
+                    "lg": "24px",
+                    "margin-mobile": "16px",
+                    "margin-desktop": "32px",
+                    "xl": "32px"
+            },
+            "fontFamily": {
+                    "body-sm": [
+                            "Hanken Grotesk"
+                    ],
+                    "label-md": [
+                            "JetBrains Mono"
+                    ],
+                    "display-lg": [
+                            "Manrope"
+                    ],
+                    "headline-md": [
+                            "Manrope"
+                    ],
+                    "label-sm": [
+                            "JetBrains Mono"
+                    ],
+                    "body-lg": [
+                            "Hanken Grotesk"
+                    ],
+                    "headline-lg": [
+                            "Manrope"
+                    ],
+                    "body-md": [
+                            "Hanken Grotesk"
+                    ]
+            },
+            "fontSize": {
+                    "body-sm": [
+                            "14px",
+                            {
+                                    "lineHeight": "20px",
+                                    "fontWeight": "400"
+                            }
+                    ],
+                    "label-md": [
+                            "13px",
+                            {
+                                    "lineHeight": "16px",
+                                    "letterSpacing": "0.05em",
+                                    "fontWeight": "500"
+                            }
+                    ],
+                    "display-lg": [
+                            "40px",
+                            {
+                                    "lineHeight": "48px",
+                                    "letterSpacing": "-0.02em",
+                                    "fontWeight": "800"
+                            }
+                    ],
+                    "headline-md": [
+                            "24px",
+                            {
+                                    "lineHeight": "32px",
+                                    "fontWeight": "600"
+                            }
+                    ],
+                    "label-sm": [
+                            "11px",
+                            {
+                                    "lineHeight": "14px",
+                                    "fontWeight": "600"
+                            }
+                    ],
+                    "body-lg": [
+                            "18px",
+                            {
+                                    "lineHeight": "28px",
+                                    "fontWeight": "400"
+                            }
+                    ],
+                    "headline-lg": [
+                            "32px",
+                            {
+                                    "lineHeight": "40px",
+                                    "fontWeight": "700"
+                            }
+                    ],
+                    "body-md": [
+                            "16px",
+                            {
+                                    "lineHeight": "24px",
+                                    "fontWeight": "400"
+                            }
+                    ]
+            }
+    },
+        },
+      }
+    </script>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;600&amp;family=JetBrains+Mono:wght@500;600&amp;family=Manrope:wght@600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        body { font-family: 'Hanken Grotesk', sans-serif; }
+        .font-jetbrains { font-family: 'JetBrains Mono', monospace; }
+        .font-manrope { font-family: 'Manrope', sans-serif; }
+        
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        
+        .input-field {
+            @apply w-full rounded-DEFAULT border-outline-variant bg-surface-container-lowest px-md py-sm font-body-md text-on-surface focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-colors;
+        }
+        
+        .label-text {
+            @apply font-label-md text-label-md text-on-surface-variant mb-xs block;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background min-h-screen flex">
+<!-- Side Nav (Hidden on Mobile) -->
+<nav class="hidden md:flex flex-col h-screen fixed left-0 top-0 border-r border-outline-variant p-sm bg-surface-container w-64 z-40">
+<div class="mb-lg px-sm pt-sm">
+<h1 class="font-headline-md text-headline-md text-primary">LuxeManage</h1>
+<p class="font-label-sm text-label-sm text-on-surface-variant mt-xs">PMS v1.0</p>
+</div>
+<div class="flex-1 space-y-xs overflow-y-auto">
+<a class="flex items-center gap-md px-md py-sm text-on-surface-variant hover:bg-surface-container-highest rounded-lg transition-all duration-200 ease-in-out" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="font-label-md text-label-md">Dashboard</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm text-on-surface-variant hover:bg-surface-container-highest rounded-lg transition-all duration-200 ease-in-out" href="#">
+<span class="material-symbols-outlined">grid_view</span>
+<span class="font-label-md text-label-md">Room Map</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm text-on-surface-variant hover:bg-surface-container-highest rounded-lg transition-all duration-200 ease-in-out" href="#">
+<span class="material-symbols-outlined">calendar_today</span>
+<span class="font-label-md text-label-md">Reservations</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm text-on-surface-variant hover:bg-surface-container-highest rounded-lg transition-all duration-200 ease-in-out" href="#">
+<span class="material-symbols-outlined">sync_alt</span>
+<span class="font-label-md text-label-md">Check-in/Out</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm text-on-surface-variant hover:bg-surface-container-highest rounded-lg transition-all duration-200 ease-in-out" href="#">
+<span class="material-symbols-outlined">cleaning_services</span>
+<span class="font-label-md text-label-md">Housekeeping</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm text-on-surface-variant hover:bg-surface-container-highest rounded-lg transition-all duration-200 ease-in-out" href="#">
+<span class="material-symbols-outlined">person_search</span>
+<span class="font-label-md text-label-md">Guest CRM</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm bg-primary-container text-on-primary-container font-semibold rounded-lg transition-all duration-200 ease-in-out" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="font-label-md text-label-md">Settings</span>
+</a>
+</div>
+<div class="mt-auto pt-md border-t border-outline-variant space-y-xs">
+<a class="flex items-center gap-md px-md py-sm text-on-surface-variant hover:bg-surface-container-highest rounded-lg transition-all duration-200 ease-in-out" href="#">
+<span class="material-symbols-outlined">support_agent</span>
+<span class="font-label-md text-label-md">Support</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm text-on-surface-variant hover:bg-surface-container-highest rounded-lg transition-all duration-200 ease-in-out" href="#">
+<span class="material-symbols-outlined">logout</span>
+<span class="font-label-md text-label-md">Logout</span>
+</a>
+</div>
+</nav>
+<!-- Main Content -->
+<main class="flex-1 md:ml-64 flex flex-col min-h-screen">
+<!-- Top App Bar (Mobile Only for Nav, but acts as header here) -->
+<header class="flex justify-between items-center w-full px-margin-mobile md:px-margin-desktop h-16 sticky top-0 z-30 bg-surface-container-lowest border-b-2 border-primary">
+<div class="flex items-center gap-sm">
+<button class="md:hidden p-xs text-on-surface-variant hover:bg-surface-container-high rounded-full transition-colors">
+<span class="material-symbols-outlined">menu</span>
+</button>
+<h2 class="font-headline-md text-headline-md text-primary hidden md:block">Settings</h2>
+</div>
+<div class="flex items-center gap-md">
+<button class="text-on-surface-variant hover:bg-surface-container-high p-xs rounded-full transition-colors">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<div class="h-8 w-8 rounded-full bg-primary-container text-on-primary-container flex items-center justify-center font-bold font-manrope">
+                    AD
+                </div>
+</div>
+</header>
+<!-- Page Content -->
+<div class="p-margin-mobile md:p-margin-desktop flex-1 max-w-5xl mx-auto w-full">
+<!-- Header & Breadcrumb -->
+<div class="mb-lg">
+<nav aria-label="Breadcrumb" class="flex text-on-surface-variant mb-sm">
+<ol class="inline-flex items-center space-x-1 md:space-x-3">
+<li class="inline-flex items-center">
+<a class="inline-flex items-center font-label-md text-label-md hover:text-primary transition-colors" href="#">
+                                Settings
+                            </a>
+</li>
+<li>
+<div class="flex items-center">
+<span class="material-symbols-outlined text-[16px] mx-1">chevron_right</span>
+<a class="font-label-md text-label-md hover:text-primary transition-colors" href="#">Room Management</a>
+</div>
+</li>
+<li aria-current="page">
+<div class="flex items-center">
+<span class="material-symbols-outlined text-[16px] mx-1">chevron_right</span>
+<span class="font-label-md text-label-md text-on-surface">Add Room</span>
+</div>
+</li>
+</ol>
+</nav>
+<h1 class="font-headline-lg text-headline-lg text-on-surface">Tambah Data Kamar Hotel</h1>
+<p class="font-body-md text-body-md text-on-surface-variant mt-xs">Masukkan detail informasi untuk mendaftarkan kamar baru ke dalam sistem operasional.</p>
+</div>
+<!-- Form Container -->
+<form class="space-y-lg">
+<!-- Bento Grid Layout for Sections -->
+<div class="grid grid-cols-1 md:grid-cols-12 gap-lg">
+<!-- Left Column: Basic Info & Capacity (8 cols) -->
+<div class="md:col-span-8 space-y-lg">
+<!-- Section 1: Basic Information -->
+<section class="bg-surface-container-lowest rounded-xl border border-outline-variant p-lg shadow-sm">
+<h3 class="font-headline-md text-headline-md text-on-surface mb-md flex items-center gap-sm">
+<span class="material-symbols-outlined text-primary">info</span>
+                                Informasi Dasar
+                            </h3>
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-md">
+<div class="col-span-1 sm:col-span-2">
+<label class="label-text" for="room_number">Nomor Kamar <span class="text-error">*</span></label>
+<input class="input-field font-jetbrains text-lg font-bold" id="room_number" name="room_number" placeholder="Misal: 101" required="" type="text"/>
+</div>
+<div>
+<label class="label-text" for="floor">Lantai <span class="text-error">*</span></label>
+<select class="input-field appearance-none bg-[url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2224%22%20height%3D%2224%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22%23404751%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpolyline%20points%3D%226%209%2012%2015%2018%209%22%3E%3C%2Fpolyline%3E%3C%2Fsvg%3E')] bg-no-repeat bg-[position:right_12px_center] bg-[size:16px]" id="floor" name="floor" required="">
+<option disabled="" selected="" value="">Pilih Lantai</option>
+<option value="1">Lantai 1</option>
+<option value="2">Lantai 2</option>
+<option value="3">Lantai 3</option>
+<option value="4">Lantai 4</option>
+<option value="5">Lantai 5</option>
+</select>
+</div>
+<div>
+<label class="label-text" for="room_type">Tipe Kamar <span class="text-error">*</span></label>
+<select class="input-field appearance-none bg-[url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2224%22%20height%3D%2224%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22%23404751%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpolyline%20points%3D%226%209%2012%2015%2018%209%22%3E%3C%2Fpolyline%3E%3C%2Fsvg%3E')] bg-no-repeat bg-[position:right_12px_center] bg-[size:16px]" id="room_type" name="room_type" required="">
+<option disabled="" selected="" value="">Pilih Tipe</option>
+<option value="standard">Standard</option>
+<option value="deluxe">Deluxe</option>
+<option value="suite">Suite</option>
+<option value="executive">Executive</option>
+</select>
+</div>
+</div>
+</section>
+<!-- Section 2: Capacity & Beds -->
+<section class="bg-surface-container-lowest rounded-xl border border-outline-variant p-lg shadow-sm">
+<h3 class="font-headline-md text-headline-md text-on-surface mb-md flex items-center gap-sm">
+<span class="material-symbols-outlined text-primary">group</span>
+                                Kapasitas &amp; Tempat Tidur
+                            </h3>
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-md items-end">
+<div>
+<label class="label-text">Kapasitas Dewasa</label>
+<div class="flex items-center border border-outline-variant rounded-DEFAULT overflow-hidden bg-surface-container-lowest">
+<button class="px-sm py-sm text-on-surface-variant hover:bg-surface-container-high transition-colors" onclick="document.getElementById('adult_cap').stepDown()" type="button">
+<span class="material-symbols-outlined text-[20px]">remove</span>
+</button>
+<input class="w-full text-center border-none font-jetbrains font-bold focus:ring-0 p-sm text-on-surface bg-transparent" id="adult_cap" max="10" min="1" name="adult_cap" readonly="" type="number" value="2"/>
+<button class="px-sm py-sm text-on-surface-variant hover:bg-surface-container-high transition-colors" onclick="document.getElementById('adult_cap').stepUp()" type="button">
+<span class="material-symbols-outlined text-[20px]">add</span>
+</button>
+</div>
+</div>
+<div>
+<label class="label-text">Kapasitas Anak</label>
+<div class="flex items-center border border-outline-variant rounded-DEFAULT overflow-hidden bg-surface-container-lowest">
+<button class="px-sm py-sm text-on-surface-variant hover:bg-surface-container-high transition-colors" onclick="document.getElementById('child_cap').stepDown()" type="button">
+<span class="material-symbols-outlined text-[20px]">remove</span>
+</button>
+<input class="w-full text-center border-none font-jetbrains font-bold focus:ring-0 p-sm text-on-surface bg-transparent" id="child_cap" max="10" min="0" name="child_cap" readonly="" type="number" value="0"/>
+<button class="px-sm py-sm text-on-surface-variant hover:bg-surface-container-high transition-colors" onclick="document.getElementById('child_cap').stepUp()" type="button">
+<span class="material-symbols-outlined text-[20px]">add</span>
+</button>
+</div>
+</div>
+<div class="col-span-1 sm:col-span-2 mt-sm">
+<label class="label-text mb-sm">Tipe Tempat Tidur</label>
+<div class="grid grid-cols-2 sm:grid-cols-4 gap-sm">
+<!-- Radio Cards for Beds -->
+<label class="cursor-pointer relative">
+<input class="peer sr-only" name="bed_type" type="radio" value="single"/>
+<div class="p-sm border border-outline-variant rounded-lg text-center hover:border-primary hover:bg-primary-fixed-dim/10 peer-checked:border-primary peer-checked:bg-primary-container peer-checked:text-on-primary-container transition-all">
+<span class="material-symbols-outlined mb-xs">bed</span>
+<span class="block font-label-md text-label-md">Single</span>
+</div>
+</label>
+<label class="cursor-pointer relative">
+<input class="peer sr-only" name="bed_type" type="radio" value="twin"/>
+<div class="p-sm border border-outline-variant rounded-lg text-center hover:border-primary hover:bg-primary-fixed-dim/10 peer-checked:border-primary peer-checked:bg-primary-container peer-checked:text-on-primary-container transition-all">
+<span class="material-symbols-outlined mb-xs">bed</span>
+<span class="block font-label-md text-label-md">Twin</span>
+</div>
+</label>
+<label class="cursor-pointer relative">
+<input checked="" class="peer sr-only" name="bed_type" type="radio" value="queen"/>
+<div class="p-sm border border-outline-variant rounded-lg text-center hover:border-primary hover:bg-primary-fixed-dim/10 peer-checked:border-primary peer-checked:bg-primary-container peer-checked:text-on-primary-container transition-all">
+<span class="material-symbols-outlined mb-xs">bed</span>
+<span class="block font-label-md text-label-md">Queen</span>
+</div>
+</label>
+<label class="cursor-pointer relative">
+<input class="peer sr-only" name="bed_type" type="radio" value="king"/>
+<div class="p-sm border border-outline-variant rounded-lg text-center hover:border-primary hover:bg-primary-fixed-dim/10 peer-checked:border-primary peer-checked:bg-primary-container peer-checked:text-on-primary-container transition-all">
+<span class="material-symbols-outlined mb-xs">king_bed</span>
+<span class="block font-label-md text-label-md">King</span>
+</div>
+</label>
+</div>
+</div>
+</div>
+</section>
+<!-- Section 3: Pricing & Facilities -->
+<section class="bg-surface-container-lowest rounded-xl border border-outline-variant p-lg shadow-sm">
+<h3 class="font-headline-md text-headline-md text-on-surface mb-md flex items-center gap-sm">
+<span class="material-symbols-outlined text-primary">payments</span>
+                                Harga Dasar &amp; Fasilitas
+                            </h3>
+<div class="mb-md">
+<label class="label-text" for="base_price">Harga Dasar per Malam (IDR) <span class="text-error">*</span></label>
+<div class="relative">
+<div class="absolute inset-y-0 left-0 pl-sm flex items-center pointer-events-none">
+<span class="font-jetbrains text-on-surface-variant font-bold">Rp</span>
+</div>
+<input class="input-field pl-xl font-jetbrains text-lg font-bold text-right" id="base_price" name="base_price" placeholder="0" required="" type="text"/>
+</div>
+</div>
+<div>
+<label class="label-text mb-sm">Fasilitas Kamar (Pilih yang sesuai)</label>
+<div class="flex flex-wrap gap-sm">
+<!-- Amenity Chips -->
+<label class="cursor-pointer">
+<input checked="" class="peer sr-only" name="amenities[]" type="checkbox" value="wifi"/>
+<div class="px-sm py-xs border border-outline-variant rounded-full flex items-center gap-xs font-label-sm text-label-sm hover:bg-surface-container transition-colors peer-checked:bg-secondary-fixed peer-checked:text-on-secondary-fixed peer-checked:border-secondary">
+<span class="material-symbols-outlined text-[16px]">wifi</span> Wi-Fi
+                                        </div>
+</label>
+<label class="cursor-pointer">
+<input checked="" class="peer sr-only" name="amenities[]" type="checkbox" value="ac"/>
+<div class="px-sm py-xs border border-outline-variant rounded-full flex items-center gap-xs font-label-sm text-label-sm hover:bg-surface-container transition-colors peer-checked:bg-secondary-fixed peer-checked:text-on-secondary-fixed peer-checked:border-secondary">
+<span class="material-symbols-outlined text-[16px]">ac_unit</span> AC
+                                        </div>
+</label>
+<label class="cursor-pointer">
+<input checked="" class="peer sr-only" name="amenities[]" type="checkbox" value="tv"/>
+<div class="px-sm py-xs border border-outline-variant rounded-full flex items-center gap-xs font-label-sm text-label-sm hover:bg-surface-container transition-colors peer-checked:bg-secondary-fixed peer-checked:text-on-secondary-fixed peer-checked:border-secondary">
+<span class="material-symbols-outlined text-[16px]">tv</span> TV
+                                        </div>
+</label>
+<label class="cursor-pointer">
+<input class="peer sr-only" name="amenities[]" type="checkbox" value="minibar"/>
+<div class="px-sm py-xs border border-outline-variant rounded-full flex items-center gap-xs font-label-sm text-label-sm hover:bg-surface-container transition-colors peer-checked:bg-secondary-fixed peer-checked:text-on-secondary-fixed peer-checked:border-secondary">
+<span class="material-symbols-outlined text-[16px]">kitchen</span> Minibar
+                                        </div>
+</label>
+<label class="cursor-pointer">
+<input class="peer sr-only" name="amenities[]" type="checkbox" value="bathtub"/>
+<div class="px-sm py-xs border border-outline-variant rounded-full flex items-center gap-xs font-label-sm text-label-sm hover:bg-surface-container transition-colors peer-checked:bg-secondary-fixed peer-checked:text-on-secondary-fixed peer-checked:border-secondary">
+<span class="material-symbols-outlined text-[16px]">bathtub</span> Bathtub
+                                        </div>
+</label>
+<label class="cursor-pointer">
+<input class="peer sr-only" name="amenities[]" type="checkbox" value="city_view"/>
+<div class="px-sm py-xs border border-outline-variant rounded-full flex items-center gap-xs font-label-sm text-label-sm hover:bg-surface-container transition-colors peer-checked:bg-secondary-fixed peer-checked:text-on-secondary-fixed peer-checked:border-secondary">
+<span class="material-symbols-outlined text-[16px]">location_city</span> City View
+                                        </div>
+</label>
+</div>
+</div>
+</section>
+</div>
+<!-- Right Column: Status & Description (4 cols) -->
+<div class="md:col-span-4 space-y-lg">
+<!-- Section 4: Room Status & Description -->
+<section class="bg-surface-container-lowest rounded-xl border border-outline-variant p-lg shadow-sm h-full flex flex-col">
+<h3 class="font-headline-md text-headline-md text-on-surface mb-md flex items-center gap-sm">
+<span class="material-symbols-outlined text-primary">analytics</span>
+                                Status &amp; Catatan
+                            </h3>
+<div class="mb-md">
+<label class="label-text" for="initial_status">Status Awal</label>
+<select class="input-field appearance-none bg-[url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2224%22%20height%3D%2224%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22%23404751%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpolyline%20points%3D%226%209%2012%2015%2018%209%22%3E%3C%2Fpolyline%3E%3C%2Fsvg%3E')] bg-no-repeat bg-[position:right_12px_center] bg-[size:16px]" id="initial_status" name="initial_status">
+<option value="vacant_clean">Vacant / Clean (VC)</option>
+<option value="maintenance">Maintenance (OOO)</option>
+</select>
+</div>
+<div class="flex-1 flex flex-col">
+<label class="label-text" for="description">Deskripsi / Catatan Internal</label>
+<textarea class="input-field flex-1 resize-none" id="description" name="description" placeholder="Tambahkan catatan khusus mengenai kamar ini (opsional)..." rows="5"></textarea>
+</div>
+</section>
+</div>
+</div>
+<!-- Form Actions (Sticky Bottom on Mobile, Standard on Desktop) -->
+<div class="fixed bottom-0 left-0 right-0 md:static p-margin-mobile md:p-0 bg-surface-container-lowest md:bg-transparent border-t border-outline-variant md:border-none z-20 flex justify-end gap-md">
+<button class="px-lg py-sm rounded-DEFAULT border border-primary text-primary font-label-md text-label-md hover:bg-primary-fixed-dim/10 transition-colors" type="button">
+                        Batal
+                    </button>
+<button class="px-lg py-sm rounded-DEFAULT bg-primary text-on-primary font-label-md text-label-md hover:bg-primary/90 transition-colors shadow-sm" type="submit">
+                        Simpan Data Kamar
+                    </button>
+</div>
+<!-- Spacer for mobile sticky footer -->
+<div class="h-20 md:hidden"></div>
+</form>
+</div>
+</main>
+<script>
+        // Simple format for currency input
+        const priceInput = document.getElementById('base_price');
+        priceInput.addEventListener('input', function(e) {
+            let value = e.target.value.replace(/\D/g, "");
+            if (value !== "") {
+                value = parseInt(value, 10).toLocaleString('id-ID');
+            }
+            e.target.value = value;
+        });
+    </script>
+</body></html>
